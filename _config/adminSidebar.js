@@ -4,7 +4,7 @@ const pages = config('pages') // Get Pages from config
 export default [
   {
     title: 'iauctions.cms.sidebar.adminGroup',
-    icon: 'fab fa-blogger',
+    icon: 'fas fa-gavel',
     children: [
       pages.qauction.auctions,
       pages.qauction.categories,
