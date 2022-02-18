@@ -8,8 +8,23 @@ export default {
     crud: import('@imagina/qauction/_crud/auctions'),
     page: () => import('@imagina/qcrud/_pages/admin/crudPage'),
     layout: () => import('@imagina/qsite/_layouts/master.vue'),
-    title: 'iauctions.cms.sidebar.auctions',
-    icon: 'fas fa-layer-group',
+    title: 'iauctions.cms.sidebar.adminAuctions',
+    icon: 'fas fa-gavel',
+    subHeader: {
+      refresh: true,
+    }
+  },
+  bids: {
+    permission: 'iauctions.bids.manage',
+    activated: true,
+    authenticated: true,
+    path: '/auctions/bids/index',
+    name: 'qauctions.admin.bids',
+    crud: import('@imagina/qauction/_crud/bids'),
+    page: () => import('@imagina/qcrud/_pages/admin/crudPage'),
+    layout: () => import('@imagina/qsite/_layouts/master.vue'),
+    title: 'iauctions.cms.sidebar.adminBids',
+    icon: 'far fa-hand-point-up',
     subHeader: {
       refresh: true,
     }
