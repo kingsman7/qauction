@@ -230,7 +230,7 @@ export default {
             else return {vIf: false}
           },
           action: (item) => {
-            console.warn('Do something...')
+            this.setBidAsWinner(item)
           }
         }
       ]
@@ -246,6 +246,39 @@ export default {
 
       //response
       return response
+    },
+    //Set bid as winner
+    setBidAsWinner(bid) {
+      this.$alert.warning({
+        mode: 'modal',
+        title: this.$trp('iauctions.cms.setAsWinner'),
+        message: `
+          <div>${this.$tr('isite.cms.label.provider')}: ${bid.provider.firstName} ${bid.provider.lastName}</div>
+          <div>${this.$tr('isite.cms.label.amount')}: ${this.$trn(bid.amount)}</div>`,
+        actions: [
+          {label: this.$tr('isite.cms.label.cancel'), color: 'grey-8'},
+          {
+            label: this.$tr('isite.cms.label.send'),
+            color: 'red',
+            handler: () => {
+              this.modal.loading = true
+              //request Params
+              let requestData = {winner: 1}
+              //request
+              this.$crud.update('apiRoutes.qauction.bids', bid.id, requestData).then(response => {
+                this.$alert.info({message: `${this.$tr('isite.cms.message.recordCreated')}`})
+                //Emit event to refrsh crud
+                this.$root.$emit('crud.data.refresh')
+                this.modal.loading = false
+                this.modal.show = false
+              }).catch(error => {
+                this.$alert.error({message: `${this.$tr('isite.cms.message.recordNoCreated')}`})
+                this.modal.loading = false
+              })
+            }
+          },
+        ]
+      })
     }
   }
 }

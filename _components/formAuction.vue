@@ -66,7 +66,7 @@ export default {
               value: '',
               type: 'input',
               columns: 'col-12',
-              isTranslatable : true,
+              isTranslatable: true,
               props: {
                 label: `${this.$tr('isite.cms.form.title')}*`,
                 rules: [
@@ -78,7 +78,7 @@ export default {
               value: '',
               type: 'html',
               columns: 'col-12',
-              isTranslatable : true,
+              isTranslatable: true,
               props: {
                 label: `${this.$tr('isite.cms.form.description')}*`,
                 rules: [

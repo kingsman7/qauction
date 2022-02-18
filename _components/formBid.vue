@@ -1,14 +1,28 @@
 <template>
   <master-modal id="fromBidComponent" v-model="show" custom-position v-bind="modalProps"
                 :loading="loading" @hide="clear">
-    <dynamic-form v-if="show" v-model="form" :blocks="formBlocks" :form-id="extraFormId"
+    <!--Show Bid Data-->
+    <div v-if="bidData" class="box box-auto-height">
+      <div class="text-center">
+        <div class="q-mb-lg text-grey-8">{{ $tr('iauctions.cms.existBid') }}</div>
+        <q-btn :label="$tr('isite.cms.label.show')" color="green" unelevated rounded
+               @click="$refs.showBidData.showBidData(bidData)"/>
+      </div>
+      <!--bidData-->
+      <show-bid-data ref="showBidData"/>
+    </div>
+    <!--bidUp From-->
+    <dynamic-form v-else-if="show" v-model="form" :blocks="formBlocks" :form-id="extraFormId"
                   @submit="createBid"/>
   </master-modal>
 </template>
 <script>
+//Component
+import showBidData from '@imagina/qauction/_components/showBid'
+
 export default {
   props: {},
-  components: {},
+  components: {showBidData},
   watch: {},
   mounted() {
     this.$nextTick(function () {
@@ -22,7 +36,8 @@ export default {
       form: {},
       modalProps: {},
       auctionId: null,
-      extraFormId: null
+      extraFormId: null,
+      bidData: null
     }
   },
   computed: {
@@ -75,6 +90,33 @@ export default {
       this.extraFormId = params.extraFormId
       this.auctionId = params.auctionId
       this.modalProps = params.modalProps
+      this.getBid()
+    },
+    //Get User Bid by auction
+    getBid() {
+      this.loading = true
+      return new Promise(resolve => {
+        //request params
+        let requestParams = {
+          refresh: true,
+          params: {
+            filter: {
+              field: 'auction_id',
+              providerId: this.$store.state.quserAuth.userId
+            },
+            include: 'provider,fields,auction.category'
+          }
+        }
+        //Request
+        this.$crud.show('apiRoutes.qauction.bids', this.auctionId, requestParams).then(response => {
+          this.bidData = response.data
+          this.loading = false
+          resolve(true)
+        }).catch(error => {
+          this.loading = false
+          resolve(true)
+        })
+      })
     },
     //Create Bid
     createBid() {
