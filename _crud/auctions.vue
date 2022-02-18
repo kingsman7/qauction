@@ -68,7 +68,7 @@ export default {
               format: val => val ? val.title : '-',
             },
             {
-              name: 'department', label: this.$tr('isite.cms.label.department'), field: 'department', align: 'left',
+              name: 'department', label: this.$tr('iprofile.cms.label.userGroup'), field: 'department', align: 'left',
               format: val => val ? val.title : '-',
             },
             {
@@ -111,6 +111,7 @@ export default {
               clearable: true,
               props: {
                 label: this.$tr('isite.cms.form.type'),
+                clearable: true,
                 options: [
                   {label: this.$tr('isite.cms.label.inverse'), value: '0'},
                   {label: this.$tr('isite.cms.label.open'), value: '1'}
@@ -120,8 +121,8 @@ export default {
             categoryId: {
               value: null,
               type: 'select',
-              clearable: true,
               props: {
+                clearable: true,
                 label: this.$tr('isite.cms.form.category')
               },
               loadOptions: {
