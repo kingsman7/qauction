@@ -1,15 +1,21 @@
-<template></template>
+<template>
+  <form-auction ref="formAuction"/>
+</template>
 <script>
 //Component
-import crud from '@imagina/qcrud/_components/crud'
+import formAuction from '@imagina/qauction/_components/formAuction'
 
 export default {
+  components: {formAuction},
   data() {
     return {
       crudId: this.$uid()
     }
   },
   computed: {
+    statusColor() {
+      return ['text-red', 'text-green', 'text-blue']
+    },
     crudData() {
       return {
         crudId: this.crudId,
@@ -18,17 +24,26 @@ export default {
         permission: 'iauctions.auctions',
         extraFormFields: 'iauctions.crud-fields.auctions',
         create: {
-          title: this.$tr('iauction.cms.label.newAuction'),
-        },
-        update: {
-          title: this.$tr('iauction.cms.label.newAuction'),
-          requestParams: {include: 'parent'}
+          method: () => {
+            this.$refs.formAuction.loadform({
+              modalProps: {
+                title: this.$tr('iauctions.cms.newAuction')
+              }
+            })
+          }
         },
         read: {
           columns: [
             {name: 'id', label: this.$tr('isite.cms.form.id'), field: 'id', style: 'width: 50px'},
             {name: 'name', label: this.$tr('isite.cms.form.title'), field: 'title', align: 'left'},
-            {name: 'typeName', label: this.$tr('isite.cms.form.type'), field: 'typeName', align: 'left'},
+            {
+              name: 'statusName', label: this.$tr('isite.cms.form.status'), field: 'statusName', align: 'left',
+              classes: row => `text-weight-bold ${this.statusColor[row.status]}`
+            },
+            {
+              name: 'creator', label: this.$tr('isite.cms.label.creator'), field: 'creator', align: 'left',
+              format: val => val ? `${val.firstName} ${val.lastName}` : '-',
+            },
             {
               name: 'startAt', label: this.$tr('isite.cms.form.startDate'), field: 'startAt', align: 'left',
               format: val => val ? this.$trd(val) : '-',
@@ -37,125 +52,79 @@ export default {
               name: 'endAt', label: this.$tr('isite.cms.form.endDate'), field: 'endAt', align: 'left',
               format: val => val ? this.$trd(val) : '-',
             },
-            {name: 'statusName', label: this.$tr('isite.cms.form.status'), field: 'statusName', align: 'left'},
+            {
+              name: 'winner', label: this.$tr('isite.cms.label.winner'), field: 'winner', align: 'left',
+              format: val => val ? `${val.firstName} ${val.lastName}` : '-',
+            },
+            {name: 'typeName', label: this.$tr('isite.cms.form.type'), field: 'typeName', align: 'left'},
+            {
+              name: 'category', label: this.$tr('isite.cms.form.category'), field: 'category', align: 'left',
+              format: val => val ? val.title : '-',
+            },
+            {
+              name: 'department', label: this.$tr('isite.cms.label.department'), field: 'department', align: 'left',
+              format: val => val ? val.title : '-',
+            },
+            {
+              name: "created_at",
+              label: this.$tr("isite.cms.form.createdAt"),
+              field: "createdAt",
+              align: "left",
+              format: (val) => (val ? this.$trd(val) : "-"),
+            },
+            {
+              name: "updated_at",
+              label: this.$tr("isite.cms.form.updatedAt"),
+              field: "updatedAt",
+              align: "left",
+              format: (val) => (val ? this.$trd(val) : "-"),
+            },
             {name: 'actions', label: this.$tr('isite.cms.form.actions'), align: 'left'},
           ],
           filters: {
-            statusName: {
+            status: {
               value: null,
-              type : 'treeSelect',
-              props: { label: this.$tr('isite.cms.form.status') },
-              loadOptions: {
-                apiRoute: 'apiRoutes.qauction.auctions',
-                requestParams: {filter: {statusName: 1}}
+              type: 'select',
+              props: {
+                label: this.$tr('isite.cms.form.status'),
+                clearable: true,
+                options: [
+                  {label: this.$tr('isite.cms.label.disabled'), value: '0'},
+                  {label: this.$tr('isite.cms.label.enabled'), value: '1'},
+                  {label: this.$tr('isite.cms.label.finished'), value: '2'},
+                ]
               }
             },
+            type: {
+              value: null,
+              type: 'select',
+              clearable: true,
+              props: {
+                label: this.$tr('isite.cms.form.type'),
+                options: [
+                  {label: this.$tr('isite.cms.label.inverse'), value: '0'},
+                  {label: this.$tr('isite.cms.label.open'), value: '1'}
+                ]
+              }
+            },
+            categoryId: {
+              value: null,
+              type: 'select',
+              clearable: true,
+              props: {
+                label: this.$tr('isite.cms.form.category')
+              },
+              loadOptions: {
+                apiRoute: 'apiRoutes.qauction.categories'
+              }
+            }
+          },
+          requestParams: {
+            include: 'category,department,winner,creator'
           }
         },
-        delete: true,
-        formLeft: {
-          id: {value: ''},
-          userId: {value: this.$store.state.quserAuth.userId},
-          title: {
-            value: '',
-            type: 'input',
-            props: {
-              label: `${this.$tr('isite.cms.form.title')}*`,
-              rules: [
-                val => !!val || this.$tr('isite.cms.message.fieldRequired')
-              ],
-            },
-          },
-          description: {
-            value: '',
-            type: 'html',
-            props: {
-              label: `${this.$tr('isite.cms.form.description')}*`,
-              rules: [
-                val => !!val || this.$tr('isite.cms.message.fieldRequired')
-              ],
-            }
-          },
-        },
-        formRight: {
-          status: {
-            value: '1',
-            type: 'select',
-            props: {
-              label: `${this.$tr('isite.cms.form.status')}*`,
-              options: [
-                {label: this.$tr('isite.cms.label.inactive'), value: '0'},
-                {label: this.$tr('isite.cms.label.active'), value: '1'},
-                {label: this.$tr('isite.cms.label.finished'), value: '2'},
-              ],
-              rules: [
-                val => !!val || this.$tr('isite.cms.message.fieldRequired')
-              ],
-            }
-          },
-          type: {
-            value: '1',
-            type: 'select',
-            props: {
-              label: `${this.$tr('isite.cms.form.status')}*`,
-              options: [
-                {label: this.$tr('isite.cms.label.open'), value: '1'},
-                {label: this.$tr('isite.cms.label.inverse'), value: '0'}
-              ],
-              rules: [
-                val => !!val || this.$tr('isite.cms.message.fieldRequired')
-              ],
-            }
-          },
-          startAt: {
-            value: '',
-            type: 'date',
-            props: {
-              label: this.$tr('isite.cms.form.startDate'),
-              rules: [
-                val => !!val || this.$tr('isite.cms.message.fieldRequired')
-              ]
-            }
-          },
-          endAt: {
-            value: '',
-            type: 'date',
-            props: {
-              label: this.$tr('isite.cms.form.endDate'),
-              rules: [
-                val => !!val || this.$tr('isite.cms.message.fieldRequired')
-              ]
-            }
-          },
-          departmentId: {
-            value: null,
-            type: 'crud',
-            props: {
-              crudType: 'select',
-              crudData: import('@imagina/quser/_crud/departments'),
-              crudProps: {
-                label: `${this.$trp('iforms.common.types.departmen')}*`,
-                rules: [
-                  val => (!!val && val.length) || this.$tr('isite.cms.message.fieldRequired')
-                ]
-              },
-            }
-          },
-          categoryId: {
-            value: 1,
-           /*  type: 'crud',
-            props: {
-              crudType: 'select',
-              crudData: import('@imagina/quser/_crud/departments'),
-              crudProps: {
-                label: `${this.$trp('iprofile.cms.label.userGroup')}*`,
-                rules: [
-                  val => (!!val && val.length) || this.$tr('isite.cms.message.fieldRequired')
-                ]
-              },
-            } */
-          },
-        },
+        update: false,
+        delete: true
       }
     },
     //Crud info
