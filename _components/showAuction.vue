@@ -6,7 +6,7 @@
     <q-tabs v-model="modal.tab" dense class="box box-auto-height text-grey q-mb-md"
             active-color="primary" indicator-color="primary" align="justify" narrow-indicator>
       <q-tab name="form" :label="$tr('isite.cms.label.information')"/>
-      <q-tab name="bids" :label="$trp('iauctions.cms.bid')"/>
+      <q-tab name="bids" :label="$trp('iauctions.cms.bid')" v-if="appMode == 'iadmin'"/>
     </q-tabs>
 
     <!--Tabs panel-->
@@ -28,7 +28,7 @@
         </q-list>
       </q-tab-panel>
       <!--bids Tab-->
-      <q-tab-panel name="bids" class="q-pa-none">
+      <q-tab-panel name="bids" class="q-pa-none" v-if="appMode == 'iadmin'">
         <!--Show Bid Data-->
         <show-bid-data ref="showBidData"/>
         <!--list-->
@@ -51,7 +51,7 @@ export default {
   components: {showBidData},
   data() {
     return {
-      crudId: this.$uid(),
+      appMode: config('app.mode'),
       auctionData: null,
       formData: [],
       bids: [],

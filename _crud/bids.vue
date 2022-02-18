@@ -78,6 +78,7 @@ export default {
             }
           },
           requestParams: {
+            filter: this.appMode == 'iadmin' ? {} : {providerId: this.$store.state.quserAuth.userId},
             include: 'provider,auction.category,winner,fields'
           },
           actions: [

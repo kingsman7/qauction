@@ -19,6 +19,7 @@ export default {
   data() {
     return {
       crudId: this.$uid(),
+      appMode: config('app.mode')
     }
   },
   computed: {
@@ -32,7 +33,7 @@ export default {
         apiRoute: 'apiRoutes.qauction.auctions',
         permission: 'iauctions.auctions',
         extraFormFields: 'iauctions.crud-fields.auctions',
-        create: {
+        create: this.appMode == 'ipanel' ? false : {
           method: () => {
             this.$refs.formAuction.loadform({
               modalProps: {
@@ -145,7 +146,8 @@ export default {
               icon: 'far fa-hand-point-up',
               label: this.$tr('iauctions.cms.bidUp'),
               format: (field) => {
-                return field.row.status == 1 ? {} : {vIf: false}
+                if (this.appMode == 'iadmin') return {vIf: false}
+                else if (field.row.status == 1) return {vIf: false}
               },
               action: (item) => {
                 this.$refs.formBid.loadform({

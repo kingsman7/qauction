@@ -7,8 +7,7 @@ export default [
     icon: 'fas fa-gavel',
     children: [
       pages.mainqauction.auctions,
-      pages.mainqauction.bids,
-      pages.mainqauction.categories,
+      pages.mainqauction.bids
     ]
   },
 ]
