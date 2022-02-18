@@ -56,11 +56,11 @@ export default {
             },
             {
               name: 'startAt', label: this.$tr('isite.cms.form.startDate'), field: 'startAt', align: 'left',
-              format: val => val ? this.$trd(val) : '-',
+              format: val => val ? this.$trd(val, {type: 'long'}) : '-',
             },
             {
               name: 'endAt', label: this.$tr('isite.cms.form.endDate'), field: 'endAt', align: 'left',
-              format: val => val ? this.$trd(val) : '-',
+              format: val => val ? this.$trd(val, {type: 'long'}) : '-',
             },
             {name: 'typeName', label: this.$tr('isite.cms.form.type'), field: 'typeName', align: 'left'},
             {
@@ -147,7 +147,7 @@ export default {
               label: this.$tr('iauctions.cms.bidUp'),
               format: (field) => {
                 if (this.appMode == 'iadmin') return {vIf: false}
-                else if (field.row.status == 1) return {vIf: false}
+                else if (field.row.status != 1) return {vIf: false}
               },
               action: (item) => {
                 this.$refs.formBid.loadform({
