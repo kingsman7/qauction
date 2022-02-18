@@ -1,6 +1,5 @@
 <template>
-  <master-modal v-model="modal.show" :loading="modal.loading"
-                :title="modal.title" custom-position>
+  <master-modal v-model="modal.show" :loading="modal.loading" :title="modal.title" custom-position>
     <div class="box">
       <q-list separator dense>
         <q-item v-for="(item, itemKey) in modal.data" :key="itemKey" style="padding: 8px 0">
@@ -11,7 +10,7 @@
               <file-list v-model="item.value" grid-col-class="col-12" hide-header/>
             </q-item-label>
             <!--value-->
-            <q-item-label v-else caption>{{ item.value }}</q-item-label>
+            <q-item-label v-else caption v-html="item.value"/>
           </q-item-section>
         </q-item>
       </q-list>
@@ -139,6 +138,7 @@ export default {
             label: this.$tr('isite.cms.label.winner'),
             value: bidData.winner ? `${bidData.winner.firstName} ${bidData.winner.lastName}` : '-'
           },
+          {label: this.$tr('isite.cms.label.description'), value: bidData.description},
           {label: this.$tr("isite.cms.form.createdAt"), value: this.$trd(bidData.createdAt)},
           {label: this.$tr("isite.cms.form.updatedAt"), value: this.$trd(bidData.updatedAt)}
         ]
