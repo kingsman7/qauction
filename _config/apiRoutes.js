@@ -8,4 +8,6 @@ export default {
   version: moduleVersion,
   auctions: `${urlBase}/auctions`,
   categories: `${urlBase}/categories`,
+  bids: `${urlBase}/bids`,
+  statusBid: `${urlBase}/status-bid`,
 }
