@@ -1,6 +1,6 @@
 <template>
   <master-modal id="fromAuctionComponent" v-model="show" custom-position v-bind="modalProps"
-                :loading="loading">
+                :loading="loading" @hide="clear">
     <dynamic-form v-if="show" v-model="form" :blocks="formBlocks" @submit="createAuction"/>
   </master-modal>
 </template>
@@ -17,7 +17,7 @@ export default {
       }
       //set roleId selected.
       if (!newValue && this.selectedCategoryId)
-        this.form['category-categoryId'] = this.$clone(this.selectedCategoryId)
+        this.form['categoryId'] = this.$clone(this.selectedCategoryId)
     }
   },
   mounted() {
@@ -66,6 +66,7 @@ export default {
               value: '',
               type: 'input',
               columns: 'col-12',
+              isTranslatable : true,
               props: {
                 label: `${this.$tr('isite.cms.form.title')}*`,
                 rules: [
@@ -77,6 +78,7 @@ export default {
               value: '',
               type: 'html',
               columns: 'col-12',
+              isTranslatable : true,
               props: {
                 label: `${this.$tr('isite.cms.form.description')}*`,
                 rules: [
@@ -104,42 +106,6 @@ export default {
                 ]
               }
             },
-            status: {
-              value: '1',
-              type: 'select',
-              props: {
-                label: this.$tr('isite.cms.form.status') + '*',
-                clearable: true,
-                options: [
-                  {label: this.$tr('isite.cms.label.disabled'), value: '0'},
-                  {label: this.$tr('isite.cms.label.enabled'), value: '1'},
-                  {label: this.$tr('isite.cms.label.finished'), value: '2'},
-                ],
-                rules: [
-                  val => !!val || this.$tr('isite.cms.message.fieldRequired')
-                ]
-              }
-            },
-            startAt: {
-              value: null,
-              type: 'date',
-              props: {
-                label: this.$tr('isite.cms.form.startDate') + '*',
-                rules: [
-                  val => !!val || this.$tr('isite.cms.message.fieldRequired')
-                ]
-              }
-            },
-            endAt: {
-              value: null,
-              type: 'date',
-              props: {
-                label: this.$tr('isite.cms.form.endDate') + '*',
-                rules: [
-                  val => !!val || this.$tr('isite.cms.message.fieldRequired')
-                ]
-              }
-            },
             departmentId: {
               value: null,
               type: 'crud',
@@ -153,27 +119,38 @@ export default {
                   ]
                 },
               }
+            },
+            startAt: {
+              value: null,
+              type: 'fullDate',
+              props: {
+                label: this.$tr('isite.cms.form.startDate') + '*',
+                rules: [
+                  val => !!val || this.$tr('isite.cms.message.fieldRequired')
+                ]
+              }
+            },
+            endAt: {
+              value: null,
+              type: 'fullDate',
+              props: {
+                label: this.$tr('isite.cms.form.endDate') + '*',
+                rules: [
+                  val => !!val || this.$tr('isite.cms.message.fieldRequired')
+                ]
+              }
             }
           }
         },
         ...this.$clone(this.extraBlocks)
       ]
 
-      //concat block name to fields
-      response.forEach((block, blockKey) => {
-        let fields = {}
-        Object.keys(block.fields).forEach(fieldKey =>
-            fields[`${block.name}-${fieldKey}`] = {...block.fields[fieldKey], name: `${block.name}-${fieldKey}`}
-        )
-        response[blockKey].fields = fields
-      })
-
       //Response
       return response
     },
     //To watch category Id
     watchCategoryId() {
-      return this.form['category-categoryId']
+      return this.form['categoryId']
     }
   },
   methods: {
@@ -212,7 +189,7 @@ export default {
         //reset extra blocks
         this.extraBlocks = []
         //Get Role selected
-        let category = this.categories.find(item => item.id == this.form['category-categoryId'])
+        let category = this.categories.find(item => item.id == this.form['categoryId'])
 
         //validate role
         if (!category || !category.auctionFormId) return reject(false)
@@ -277,17 +254,15 @@ export default {
       return new Promise(resolve => {
         this.loading = true
         //get formData
-        let formData = this.$clone(this.getFormData())
+        let formData = this.$clone(this.form)
         //Request
         this.$crud.create('apiRoutes.qauction.auctions', formData).then(response => {
           //Notification
           this.$alert.info({message: `${this.$tr('isite.cms.message.recordCreated')}`})
           //Reset data
-          this.extraBlocks = []
-          this.form = {}
-          this.selectedCategoryId = null
-          this.modalProps = {}
-          this.show = false
+          this.clear()
+          //Emit event to refrsh crud
+          this.$root.$emit('crud.data.refresh')
           //Hidden loading
           this.loading = false
         }).catch(error => {
@@ -295,6 +270,14 @@ export default {
           this.loading = false
         })
       })
+    },
+    //Clear
+    clear() {
+      this.extraBlocks = []
+      this.form = {}
+      this.selectedCategoryId = null
+      this.modalProps = {}
+      this.show = false
     }
   }
 }

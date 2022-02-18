@@ -1,12 +1,16 @@
 <template>
-  <form-auction ref="formAuction"/>
+  <div>
+    <form-auction ref="formAuction"/>
+    <form-bid ref="formBid"/>
+  </div>
 </template>
 <script>
 //Component
 import formAuction from '@imagina/qauction/_components/formAuction'
+import formBid from '@imagina/qauction/_components/formBid'
 
 export default {
-  components: {formAuction},
+  components: {formAuction, formBid},
   data() {
     return {
       crudId: this.$uid()
@@ -52,10 +56,6 @@ export default {
               name: 'endAt', label: this.$tr('isite.cms.form.endDate'), field: 'endAt', align: 'left',
               format: val => val ? this.$trd(val) : '-',
             },
-            {
-              name: 'winner', label: this.$tr('isite.cms.label.winner'), field: 'winner', align: 'left',
-              format: val => val ? `${val.firstName} ${val.lastName}` : '-',
-            },
             {name: 'typeName', label: this.$tr('isite.cms.form.type'), field: 'typeName', align: 'left'},
             {
               name: 'category', label: this.$tr('isite.cms.form.category'), field: 'category', align: 'left',
@@ -64,6 +64,10 @@ export default {
             {
               name: 'department', label: this.$tr('isite.cms.label.department'), field: 'department', align: 'left',
               format: val => val ? val.title : '-',
+            },
+            {
+              name: 'winner', label: this.$tr('isite.cms.label.winner'), field: 'winner', align: 'left',
+              format: val => val ? `${val.firstName} ${val.lastName}` : '-',
             },
             {
               name: "created_at",
@@ -121,7 +125,26 @@ export default {
           },
           requestParams: {
             include: 'category,department,winner,creator'
-          }
+          },
+          actions: [
+            {
+              name: 'bid',
+              icon: 'far fa-hand-point-up',
+              label: this.$tr('iauctions.cms.bidUp'),
+              format: (field) => {
+                return field.row.status == 1 ? {} : {vIf: false}
+              },
+              action: (item) => {
+                this.$refs.formBid.loadform({
+                  auctionId: item.id,
+                  extraFormId: item.category.bidFormId,
+                  modalProps: {
+                    title: `${this.$tr('iauctions.cms.newBid')} | ${item.title}`
+                  }
+                })
+              }
+            }
+          ]
         },
         update: false,
         delete: true
