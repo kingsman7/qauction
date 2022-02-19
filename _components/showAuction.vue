@@ -7,6 +7,7 @@
             active-color="primary" indicator-color="primary" align="justify" narrow-indicator>
       <q-tab name="form" :label="$tr('isite.cms.label.information')"/>
       <q-tab name="bids" :label="$trp('iauctions.cms.bid')" v-if="appMode == 'iadmin'"/>
+      <q-tab name="chart" :label="$trp('isite.cms.label.chart')" v-if="isShow"/>
     </q-tabs>
 
     <!--Tabs panel-->
@@ -40,15 +41,21 @@
           </template>
         </q-table>
       </q-tab-panel>
+      <!--chart Tab-->
+      <q-tab-panel name="chart" class="q-pa-none" v-if="isShow">
+        <!--chart-->
+        <q-charts :lineData="bids" />
+      </q-tab-panel>
     </q-tab-panels>
   </master-modal>
 </template>
 <script>
 //Component
 import showBidData from '@imagina/qauction/_components/showBid'
-
+import QCharts from '@imagina/qsite/_components/master/charts.vue'
 export default {
-  components: {showBidData},
+  name:"ShowAuction",
+  components: { showBidData, QCharts },
   data() {
     return {
       appMode: config('app.mode'),
@@ -64,6 +71,10 @@ export default {
     }
   },
   computed: {
+    // show tab chart 
+    isShow () {
+      return this.appMode == 'iadmin' && this.bids.length
+    },
     //Payout Table
     bidsTableProps() {
       return {
