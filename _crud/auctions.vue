@@ -24,7 +24,7 @@ export default {
   },
   computed: {
     statusColor() {
-      return ['text-red', 'text-green', 'text-blue']
+      return ["text-orange", 'text-green', 'text-blue', 'text-red']
     },
     crudData() {
       return {
@@ -159,7 +159,42 @@ export default {
                   }
                 })
               }
-            }
+            },
+            {
+              name: 'cancel',
+              icon: 'fas fa-times',
+              label: this.$tr('isite.cms.label.cancel'),
+              format: (item) => {
+                if (this.appMode == 'ipanel') return {vIf: false}
+                else if ([2, 3].includes(item.status)) return {vIf: false}
+              },
+              action: (item) => {
+                this.$alert.warning({
+                  mode: 'modal',
+                  title: this.$trp('isite.cms.label.cancel'),
+                  message: `<div>${this.$tr('iauctions.cms.auction')}: ${item.title}</div>`,
+                  actions: [
+                    {label: this.$tr('isite.cms.label.cancel'), color: 'grey-8'},
+                    {
+                      label: this.$tr('isite.cms.label.send'),
+                      color: 'red',
+                      handler: () => {
+                        //request Params
+                        let requestData = {status: 3}
+                        //request
+                        this.$crud.update('apiRoutes.qauction.auctions', item.id, requestData).then(response => {
+                          this.$alert.info({message: `${this.$tr('isite.cms.message.recordCreated')}`})
+                          //Emit event to refrsh crud
+                          this.$root.$emit('crud.data.refresh')
+                        }).catch(error => {
+                          this.$alert.error({message: `${this.$tr('isite.cms.message.recordNoCreated')}`})
+                        })
+                      }
+                    },
+                  ]
+                })
+              }
+            },
           ]
         },
         update: false,
