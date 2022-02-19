@@ -24,7 +24,7 @@ export default {
   },
   computed: {
     statusColor() {
-      return ['text-red', 'text-green', 'text-blue']
+      return ["text-orange", 'text-green', 'text-blue', 'text-red']
     },
     crudData() {
       return {
@@ -68,7 +68,7 @@ export default {
               format: val => val ? val.title : '-',
             },
             {
-              name: 'department', label: this.$tr('isite.cms.label.department'), field: 'department', align: 'left',
+              name: 'department', label: this.$tr('iprofile.cms.label.userGroup'), field: 'department', align: 'left',
               format: val => val ? val.title : '-',
             },
             {
@@ -111,6 +111,7 @@ export default {
               clearable: true,
               props: {
                 label: this.$tr('isite.cms.form.type'),
+                clearable: true,
                 options: [
                   {label: this.$tr('isite.cms.label.inverse'), value: '0'},
                   {label: this.$tr('isite.cms.label.open'), value: '1'}
@@ -120,8 +121,8 @@ export default {
             categoryId: {
               value: null,
               type: 'select',
-              clearable: true,
               props: {
+                clearable: true,
                 label: this.$tr('isite.cms.form.category')
               },
               loadOptions: {
@@ -147,7 +148,7 @@ export default {
               label: this.$tr('iauctions.cms.bidUp'),
               format: (field) => {
                 if (this.appMode == 'iadmin') return {vIf: false}
-                else if (field.row.status != 1) return {vIf: false}
+                else if (field.status != 1) return {vIf: false}
               },
               action: (item) => {
                 this.$refs.formBid.loadform({
@@ -158,7 +159,42 @@ export default {
                   }
                 })
               }
-            }
+            },
+            {
+              name: 'cancel',
+              icon: 'fas fa-times',
+              label: this.$tr('isite.cms.label.cancel'),
+              format: (item) => {
+                if (this.appMode == 'ipanel') return {vIf: false}
+                else if ([2, 3].includes(item.status)) return {vIf: false}
+              },
+              action: (item) => {
+                this.$alert.warning({
+                  mode: 'modal',
+                  title: this.$trp('isite.cms.label.cancel'),
+                  message: `<div>${this.$tr('iauctions.cms.auction')}: ${item.title}</div>`,
+                  actions: [
+                    {label: this.$tr('isite.cms.label.cancel'), color: 'grey-8'},
+                    {
+                      label: this.$tr('isite.cms.label.send'),
+                      color: 'red',
+                      handler: () => {
+                        //request Params
+                        let requestData = {status: 3}
+                        //request
+                        this.$crud.update('apiRoutes.qauction.auctions', item.id, requestData).then(response => {
+                          this.$alert.info({message: `${this.$tr('isite.cms.message.recordCreated')}`})
+                          //Emit event to refrsh crud
+                          this.$root.$emit('crud.data.refresh')
+                        }).catch(error => {
+                          this.$alert.error({message: `${this.$tr('isite.cms.message.recordNoCreated')}`})
+                        })
+                      }
+                    },
+                  ]
+                })
+              }
+            },
           ]
         },
         update: false,

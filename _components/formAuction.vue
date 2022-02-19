@@ -114,7 +114,7 @@ export default {
                 crudType: 'select',
                 crudData: import('@imagina/quser/_crud/departments'),
                 crudProps: {
-                  label: `${this.$trp('isite.cms.label.department')}*`,
+                  label: `${this.$trp('iprofile.cms.label.userGroup')}*`,
                   rules: [
                     val => (!!val && val.length) || this.$tr('isite.cms.message.fieldRequired')
                   ]

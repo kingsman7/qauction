@@ -4,7 +4,6 @@
 import crud from "@imagina/qcrud/_components/crud";
 
 export default {
-
   data() {
     return {
       crudId: this.$uid(),
