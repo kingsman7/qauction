@@ -147,7 +147,7 @@ export default {
               label: this.$tr('iauctions.cms.bidUp'),
               format: (field) => {
                 if (this.appMode == 'iadmin') return {vIf: false}
-                else if (field.row.status != 1) return {vIf: false}
+                else if (field.status != 1) return {vIf: false}
               },
               action: (item) => {
                 this.$refs.formBid.loadform({
