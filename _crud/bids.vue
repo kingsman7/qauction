@@ -43,10 +43,10 @@ export default {
               name: 'amount', label: this.$tr('isite.cms.label.amount'), field: 'amount', align: 'left',
               format: val => val ? this.$trn(val) : '-',
             },
-            {
+            /*{
               name: 'winner', label: this.$tr('isite.cms.label.winner'), field: 'winner', align: 'left',
               format: val => val ? `${val.firstName} ${val.lastName}` : '-',
-            },
+            },*/
             {
               name: "created_at",
               label: this.$tr("isite.cms.form.createdAt"),
@@ -79,7 +79,7 @@ export default {
           },
           requestParams: {
             filter: this.appMode == 'iadmin' ? {} : {providerId: this.$store.state.quserAuth.userId},
-            include: 'provider,auction.category,winner,fields'
+            include: 'provider,auction.category,fields'
           },
           actions: [
             {

@@ -71,7 +71,7 @@ export default {
     }
   },
   computed: {
-    // show tab chart 
+    // show tab chart
     isShow () {
       return this.appMode == 'iadmin' && this.bids.length
     },
@@ -235,8 +235,7 @@ export default {
           icon: 'fas fa-trophy',
           label: this.$tr('iauctions.cms.setAsWinner'),
           format: item => {
-            let bid = item.row
-            if (bid.auction.status == 2 && bid.auction.type == 1 && !bid.winner)
+            if (item.auction.status == 2 && item.auction.type == 1 && !item.winner)
               return {}
             else return {vIf: false}
           },
@@ -246,17 +245,8 @@ export default {
         }
       ]
 
-      //Order field actions
-      let response = []
-      if (actions && actions.length) {
-        actions.forEach(action => {
-          if (action.format) action = {...action, ...action.format(field)}
-          response.push(action)
-        })
-      }
-
       //response
-      return response
+      return actions
     },
     //Set bid as winner
     setBidAsWinner(bid) {
