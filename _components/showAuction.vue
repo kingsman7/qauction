@@ -42,7 +42,7 @@
           <template v-slot:body-cell-id="props">
             <q-td :props="props">
               {{props.value}}
-              <q-icon v-if="props.key == 0" name="fas fa-crown" />
+              <q-icon v-if="props.key == 0" color="green" name="fas fa-crown" />
             </q-td>
           </template>
         </q-table>
