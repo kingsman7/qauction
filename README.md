@@ -2,4 +2,4 @@
 
 ## Installation
 
-`` npm i @imagina/qblog@1.0.0 ``
+`` npm i @imagina/qauction@1.0.0 ``
