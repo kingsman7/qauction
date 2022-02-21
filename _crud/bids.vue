@@ -43,10 +43,10 @@ export default {
               name: 'amount', label: this.$tr('isite.cms.label.amount'), field: 'amount', align: 'left',
               format: val => val ? this.$trn(val) : '-',
             },
-            /*{
+            {
               name: 'winner', label: this.$tr('isite.cms.label.winner'), field: 'winner', align: 'left',
-              format: val => val ? `${val.firstName} ${val.lastName}` : '-',
-            },*/
+              format: val => parseInt(val) ? this.$tr('isite.cms.label.yes') : this.$tr('isite.cms.label.yes'),
+            },
             {
               name: "created_at",
               label: this.$tr("isite.cms.form.createdAt"),

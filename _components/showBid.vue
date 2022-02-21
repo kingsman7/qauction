@@ -48,7 +48,7 @@ export default {
           {label: this.$tr('isite.cms.label.amount'), value: this.$trn(bidData.amount)},
           {
             label: this.$tr('isite.cms.label.winner'),
-            value: bidData.winner ? `${bidData.winner.firstName} ${bidData.winner.lastName}` : '-'
+            value: parseInt(bidData.winner) ? this.$tr('isite.cms.label.yes') : this.$tr('isite.cms.label.yes'),
           },
           {label: this.$tr('isite.cms.label.description'), value: bidData.description},
           {label: this.$tr("isite.cms.form.createdAt"), value: this.$trd(bidData.createdAt)},
