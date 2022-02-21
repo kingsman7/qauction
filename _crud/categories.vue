@@ -89,7 +89,7 @@ export default {
             isTranslatable: true,
             props: {
               label: `${this.$tr("isite.cms.form.title")}*`,
-              rules: [(val) => !!val || this.$tr("ui.message.fieldRequired")],
+              rules: [(val) => !!val || this.$tr("isite.cms.message.fieldRequired")],
             },
           },
           auctionFormId: {
