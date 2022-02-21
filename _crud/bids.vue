@@ -10,6 +10,7 @@ export default {
   data() {
     return {
       crudId: this.$uid(),
+      appMode : config('app.mode')
     }
   },
   computed: {
