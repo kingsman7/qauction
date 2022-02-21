@@ -46,7 +46,7 @@ export default {
             },
             {
               name: 'winner', label: this.$tr('isite.cms.label.winner'), field: 'winner', align: 'left',
-              format: val => parseInt(val) ? this.$tr('isite.cms.label.yes') : this.$tr('isite.cms.label.yes'),
+              format: val => parseInt(val) ? this.$tr('isite.cms.label.yes') : this.$tr('isite.cms.label.no'),
             },
             {
               name: "created_at",
