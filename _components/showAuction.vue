@@ -41,8 +41,16 @@
           </template>
           <template v-slot:body-cell-id="props">
             <q-td :props="props">
-              {{props.value}}
-              <q-icon v-if="props.key == 0" color="green" name="fas fa-crown" />
+              <q-icon
+                v-if="props.rowIndex == 0"
+                color="green"
+                name="fas fa-crown"
+              >
+                <q-tooltip>
+                  {{$tr('isite.cms.label.recommendation')}}
+                </q-tooltip>
+              </q-icon>
+              {{ props.value }}
             </q-td>
           </template>
         </q-table>
