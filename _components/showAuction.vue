@@ -44,7 +44,7 @@
       <!--chart Tab-->
       <q-tab-panel name="chart" class="q-pa-none" v-if="isShow">
         <!--chart-->
-        <q-charts :lineData="bids" />
+        <q-charts :chartsData="chartData" />
       </q-tab-panel>
     </q-tab-panels>
   </master-modal>
@@ -108,9 +108,49 @@ export default {
         ],
         data: this.bids
       }
-    }
+    },
+    //set chart's labels
+    dataLabels () {
+      if(!this.bids.length) return [];
+      const label = [{name:'0', label:'0',data:0}]
+      const lineData = this.$clone(this.bids) 
+      lineData.map((item) => {
+        label.push({
+          name:`${item.firstName} ${item.lastName}`,
+          label: `${item.firstName} ${item.lastName}, ${this.$trn(item.amount)}, ${this.$trn(item.points)}`,
+          data: item.points
+        })
+      })
+      return label
+    },
+    //set dataset
+    dataSets () {
+      if (!this.dataLabels.length) return [];
+      return [{
+        label: this.$tr('iauctions.cms.bid'),
+        borderColor: "#3597f9",
+        pointBackgroundColor: '#FFFFFF',
+        borderWidth: 1,
+        pointBorderColor: "#c7c7c7",
+        backgroundColor: '#3597f97a',
+        data: this.dataLabels.map(({data}) => data )
+      }]
+    },
+    //send format Data chart 
+    chartData () {
+      if(!this.dataSets.length) return {};
+      return {
+        type: 'lineChart',
+        dataSets: this.dataSets,
+        dataLabels: this.dataLabels
+      }
+    },
   },
   methods: {
+    //create random color
+    randomColor () {
+      return `#${Math.floor(Math.random()*16777215).toString(16)}`
+    },
     //Fields to show
     async showAuctionData(itemData) {
       this.auctionData = itemData
