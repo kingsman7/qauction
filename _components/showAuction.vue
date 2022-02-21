@@ -39,6 +39,20 @@
               <btn-menu :actions="bidActions(props)" :action-data="props.row"/>
             </q-td>
           </template>
+          <template v-slot:body-cell-id="props">
+            <q-td :props="props">
+              <q-icon
+                v-if="props.rowIndex == 0"
+                color="green"
+                name="fas fa-crown"
+              >
+                <q-tooltip>
+                  {{$tr('isite.cms.label.recommendation')}}
+                </q-tooltip>
+              </q-icon>
+              {{ props.value }}
+            </q-td>
+          </template>
         </q-table>
       </q-tab-panel>
       <!--chart Tab-->
