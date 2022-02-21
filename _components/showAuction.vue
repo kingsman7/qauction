@@ -213,7 +213,7 @@ export default {
           refresh: true,
           params: {
             filter: {auctionId: this.auctionData?.id},
-            include: 'provider,fields,auction'
+            include: 'provider,fields,auction.category'
           }
         }
         //Request
