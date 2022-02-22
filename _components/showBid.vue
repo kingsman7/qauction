@@ -74,7 +74,8 @@ export default {
         this.$crud.show('apiRoutes.qform.forms', formId, requestFormParams).then(response => {
           this.$clone(response.data.fields).forEach(field => {
             let fieldType = field.dynamicField?.type || 'input'//get field type
-            let fieldValue = requestValues[this.$helper.convertStringToSnakeCase(field.name)] || '-'//get field value
+            let fieldValue = requestValues[this.$helper.convertStringToSnakeCase(field.name)]//get field value
+
             //Get field file
             let fieldFile = (fieldType != 'media') ? null :
                 files.find(item => item.zone == (field.dynamicField.props.zone || 'mainimage'))
@@ -83,7 +84,7 @@ export default {
             this.modal.data.push({
               ...field,
               label: field.label.replace('*', ''),
-              value: (fieldType != 'media') ? fieldValue : [{
+              value: (fieldType != 'media') ? (fieldValue == null ? '-' : fieldValue) : [{
                 id: this.$uid(),
                 ...fieldFile,
                 filename: field.label,

@@ -41,13 +41,9 @@
           </template>
           <template v-slot:body-cell-id="props">
             <q-td :props="props">
-              <q-icon
-                v-if="props.rowIndex == 0"
-                color="green"
-                name="fas fa-crown"
-              >
+              <q-icon v-if="props.rowIndex == 0" color="green" name="fas fa-crown" class="q-mr-xs">
                 <q-tooltip>
-                  {{$tr('isite.cms.label.recommendation')}}
+                  {{ $tr('isite.cms.label.recommendation') }}
                 </q-tooltip>
               </q-icon>
               {{ props.value }}
@@ -58,7 +54,7 @@
       <!--chart Tab-->
       <q-tab-panel name="chart" class="q-pa-none" v-if="isShow">
         <!--chart-->
-        <q-charts :chartsData="chartData" />
+        <q-charts :chartsData="chartData"/>
       </q-tab-panel>
     </q-tab-panels>
   </master-modal>
@@ -67,9 +63,10 @@
 //Component
 import showBidData from '@imagina/qauction/_components/showBid'
 import QCharts from '@imagina/qsite/_components/master/charts.vue'
+
 export default {
-  name:"ShowAuction",
-  components: { showBidData, QCharts },
+  name: "ShowAuction",
+  components: {showBidData, QCharts},
   data() {
     return {
       appMode: config('app.mode'),
@@ -86,7 +83,7 @@ export default {
   },
   computed: {
     // show tab chart
-    isShow () {
+    isShow() {
       return this.appMode == 'iadmin' && this.bids.length
     },
     //Payout Table
@@ -124,21 +121,21 @@ export default {
       }
     },
     //set chart's labels
-    dataLabels () {
-      if(!this.bids.length) return [];
-      const label = [{name:'0', label:'0',data:0}]
-      const lineData = this.$clone(this.bids) 
+    dataLabels() {
+      if (!this.bids.length) return [];
+      const label = [{name: '0', label: '0', data: 0}]
+      const lineData = this.$clone(this.bids)
       lineData.map((item) => {
         label.push({
-          name:`${item.firstName} ${item.lastName}`,
-          label: `${item.firstName} ${item.lastName}, ${this.$trn(item.amount)}, ${this.$trn(item.points)}`,
+          name: `${item.provider.firstName} ${item.provider.lastName}`,
+          label: `${item.provider.firstName} ${item.provider.lastName}, ${this.$trn(item.amount)}, ${this.$trn(item.points)}`,
           data: item.points
         })
       })
       return label
     },
     //set dataset
-    dataSets () {
+    dataSets() {
       if (!this.dataLabels.length) return [];
       return [{
         label: this.$tr('iauctions.cms.bid'),
@@ -147,12 +144,12 @@ export default {
         borderWidth: 1,
         pointBorderColor: "#c7c7c7",
         backgroundColor: '#3597f97a',
-        data: this.dataLabels.map(({data}) => data )
+        data: this.dataLabels.map(({data}) => data)
       }]
     },
-    //send format Data chart 
-    chartData () {
-      if(!this.dataSets.length) return {};
+    //send format Data chart
+    chartData() {
+      if (!this.dataSets.length) return {};
       return {
         type: 'lineChart',
         dataSets: this.dataSets,
@@ -162,8 +159,8 @@ export default {
   },
   methods: {
     //create random color
-    randomColor () {
-      return `#${Math.floor(Math.random()*16777215).toString(16)}`
+    randomColor() {
+      return `#${Math.floor(Math.random() * 16777215).toString(16)}`
     },
     //Fields to show
     async showAuctionData(itemData) {
@@ -229,7 +226,7 @@ export default {
         this.$crud.show('apiRoutes.qform.forms', formId, requestFormParams).then(response => {
           this.$clone(response.data.fields).forEach(field => {
             let fieldType = field.dynamicField?.type || 'input'//get field type
-            let fieldValue = requestValues[this.$helper.convertStringToSnakeCase(field.name)] || '-'//get field value
+            let fieldValue = requestValues[this.$helper.convertStringToSnakeCase(field.name)]//get field value
             //Get field file
             let fieldFile = (fieldType != 'media') ? null :
                 files.find(item => item.zone == (field.dynamicField.props.zone || 'mainimage'))
@@ -238,7 +235,7 @@ export default {
             this.formData.push({
               ...field,
               label: field.label.replace('*', ''),
-              value: (fieldType != 'media') ? fieldValue : [{
+              value: (fieldType != 'media') ? (fieldValue != null ? fieldValue : '-') : [{
                 id: this.$uid(),
                 ...fieldFile,
                 filename: field.label,
