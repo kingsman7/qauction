@@ -50,18 +50,6 @@ export default {
             userId: {value: this.$store.state.quserAuth.userId},
             providerId: {value: this.$store.state.quserAuth.userId},
             auctionId: {value: this.auctionId},
-            amount: {
-              value: '',
-              type: 'input',
-              columns: 'col-12',
-              props: {
-                type: 'number',
-                label: `${this.$tr('isite.cms.label.amount')}*`,
-                rules: [
-                  val => !!val || this.$tr('isite.cms.message.fieldRequired')
-                ],
-              },
-            },
             description: {
               value: '',
               type: 'html',
@@ -72,6 +60,18 @@ export default {
                   val => !!val || this.$tr('isite.cms.message.fieldRequired')
                 ],
               }
+            },
+            amount: {
+              value: '',
+              type: 'input',
+              columns: 'col-12',
+              props: {
+                type: 'number',
+                label: `${this.$tr('isite.cms.label.price')}*`,
+                rules: [
+                  val => !!val || this.$tr('isite.cms.message.fieldRequired')
+                ],
+              },
             },
           }
         }

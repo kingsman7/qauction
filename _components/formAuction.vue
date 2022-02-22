@@ -57,24 +57,12 @@ export default {
             }
           }
         },
-        
+
         {
           name: 'block1',
           fields: {
             id: {value: ''},
             userId: {value: this.$store.state.quserAuth.userId},
-            description: {
-              value: '',
-              type: 'html',
-              columns: 'col-12',
-              isTranslatable: true,
-              props: {
-                label: `${this.$tr('isite.cms.form.description')}*`,
-                rules: [
-                  val => !!val || this.$tr('isite.cms.message.fieldRequired')
-                ],
-              }
-            },
             title: {
               value: '',
               type: 'input',
@@ -86,6 +74,18 @@ export default {
                   val => !!val || this.$tr('isite.cms.message.fieldRequired')
                 ],
               },
+            },
+            description: {
+              value: '',
+              type: 'html',
+              columns: 'col-12',
+              isTranslatable: true,
+              props: {
+                label: `${this.$tr('isite.cms.form.description')}*`,
+                rules: [
+                  val => !!val || this.$tr('isite.cms.message.fieldRequired')
+                ],
+              }
             },
           }
         },
