@@ -6,6 +6,7 @@
     <form-bid ref="formBid"/>
     <!--Show Auction-->
     <show-auction ref="showAuction"/>
+    <config-crud ref="configCrud" />
   </div>
 </template>
 <script>
@@ -13,9 +14,10 @@
 import formAuction from '@imagina/qauction/_components/formAuction'
 import formBid from '@imagina/qauction/_components/formBid'
 import showAuction from '@imagina/qauction/_components/showAuction'
-
+import configCrud from "@imagina/qcrud/_config/CrudConfig"
+import auctionJson from "@imagina/qauction/_crud/auctions.json"
 export default {
-  components: {formAuction, formBid, showAuction},
+  components: {formAuction, configCrud, formBid, showAuction},
   data() {
     return {
       crudId: this.$uid(),
@@ -27,8 +29,10 @@ export default {
       return ["text-orange", 'text-green', 'text-blue', 'text-red']
     },
     crudData() {
+      //auctionCrud.getData(auctionJson,{}, this.$refs, this.statusColor)
       return {
-        crudId: this.crudId,
+        ...this.$refs.configCrud.getData(auctionJson, this.$refs, null, this.statusColor, null, this.appMode),
+        /*crudId: this.crudId,
         entityName: config("main.qauction.entityNames.auction"),
         apiRoute: 'apiRoutes.qauction.auctions',
         permission: 'iauctions.auctions',
@@ -198,7 +202,7 @@ export default {
           ]
         },
         update: false,
-        delete: false
+        delete: false*/
       }
     },
     //Crud info

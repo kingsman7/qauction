@@ -1,9 +1,14 @@
-<template></template>
+<template>
+  <config-crud ref="configCrud" /></template>
 <script>
 //Component
 import crud from "@imagina/qcrud/_components/crud";
-
+import configCrud from "@imagina/qcrud/_config/CrudConfig"
+import auctionJson from "@imagina/qauction/_crud/categories.json"
 export default {
+  components:{
+    configCrud
+  },
   data() {
     return {
       crudId: this.$uid(),
@@ -12,7 +17,8 @@ export default {
   computed: {
     crudData() {
       return {
-        crudId: this.crudId,
+        ...this.$refs.configCrud.getData(auctionJson),     
+        /*crudId: this.crudId,
         entityName: config("main.qauctions.entityNames.category"),
         apiRoute: "apiRoutes.qauction.categories",
         permission: "iauctions.categories",
@@ -79,7 +85,7 @@ export default {
           title: this.$tr("iauctions.cms.updateCategory"),
           requestParams: {},
         },
-        delete: true,
+        delete: true,*/
         formLeft: {
           id: {value: ""},
           userId: {value: this.$store.state.quserAuth.userId},

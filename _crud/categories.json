@@ -1,0 +1,116 @@
+{
+  "crudId": "iauctions-crud-categories",
+  "entityName": "category",
+  "apiRoute": "/iauctions/v1/categories",
+  "permission": "iauctions.categories",
+  "extraFormFields": "iauctions.crud-fields.categories",
+  "create": {
+    "title": "iauctions.cms.newCategory"
+  },
+  "read": {
+    "columns": [
+      {
+        "name": "id",
+        "label": {
+          "isTranslatable": "singular",
+          "value": "isite.cms.form.id"
+        },
+        "field": "id",
+        "sortable": false,
+        "style": "width: 50px"
+      },
+      {
+        "name": "name",
+        "label": {
+          "isTranslatable": "singular",
+          "value": "isite.cms.form.title"
+        },
+        "field": "title",
+        "align": "rigth",
+        "sortable": false
+      },
+      {
+        "name": "systemName",
+        "label": {
+          "isTranslatable": "singular",
+          "value": "isite.cms.form.systemName"
+        },
+        "field": "systemName",
+        "align": "left",
+        "sortable": false
+      },
+      {
+        "name": "auctionForm",
+        "label": {
+          "isTranslatable": "singular",
+          "value": "iauctions.cms.auctionForm"
+        },
+        "field": "auctionForm",
+        "align": "left",
+        "sortable": false,
+        "format":{
+          "type":"str",
+          "child":["title"]
+        }
+      },
+      {
+        "name": "bidForm",
+        "label": {
+          "isTranslatable": "singular",
+          "value": "iauctions.cms.bidForm"
+        },
+        "field": "bidForm",
+        "align": "left",
+        "sortable": false,
+        "format":{
+          "type":"str",
+          "child":["title"]
+        }
+      },
+      {
+        "name": "create_at",
+        "label": {
+          "isTranslatable": "singular",
+          "value": "isite.cms.form.createdAt"
+        },
+        "field": "createdAt",
+        "align": "left",
+        "sortable": false,
+        "format": {
+          "type": "date"
+        }
+      },
+      {
+        "name": "updated_at",
+        "label": {
+          "isTranslatable": "singular",
+          "value": "isite.cms.form.updatedAt"
+        },
+        "field": "updatedAt",
+        "align": "right",
+        "sortable": false,
+        "format": {
+          "type": "date"
+        }
+      },
+      {
+        "name": "actions",
+        "label": {
+          "isTranslatable": "singular",
+          "value": "isite.cms.form.actions"
+        },
+        "align": "left"
+      }
+    ]
+  },
+  "update": {
+    "title": {
+      "isTranslatable": {
+        "type": "singular",
+        "value": "iauctions.cms.updateCategory"
+      }
+    },
+    "requestParams": {}
+  },
+  "delete": true
+}

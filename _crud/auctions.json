@@ -1,0 +1,349 @@
+{
+  "crudId": "iauctions-crud-auctions",
+  "entityName": "auction",
+  "apiRoute": "/iauctions/v1/auctions",
+  "permission": "iauctions.auctions",
+  "extraFormFields": "iauctions.crud-fields.auctions",
+  "create": {
+    "validatioAppMode": {
+      "mode":"iadmin",
+      "ref": {
+        "name":"formAuction",
+        "method": "loadform"
+      },
+      "modalProps":{
+        "title": "iauctions.cms.newAuction"
+      }
+    }
+  },
+  "read": {
+    "columns": [
+      {
+        "name": "id",
+        "label": {
+          "validationAppMode":"iadmin",
+          "isTranslatable": "singular",
+          "value": "isite.cms.form.id"
+        },
+        "field": "id",
+        "sortable": false,
+        "style": "width: 50px"
+      },
+      {
+        "name": "title",
+        "label": {
+          "isTranslatable": "singular",
+          "value": "isite.cms.form.title"
+        },
+        "field": "title",
+        "align": "left",
+        "sortable": false
+      },
+      {
+        "name": "statusName",
+        "label": {
+          "isTranslatable": "singular",
+          "value": "isite.cms.form.status"
+        },
+        "field": "statusName",
+        "align": "left",
+        "sortable": false,
+        "classes":{
+          "value": "text-weight-bold",
+          "child": "status"
+        }
+      },
+      {
+        "name": "creator",
+        "label": {
+          "isTranslatable": "singular",
+          "value": "isite.cms.label.creator"
+        },
+        "field": "creator",
+        "align": "left",
+        "sortable": false,
+        "format":{
+          "type":"concat",
+          "child":["firstName", "lastName"]
+        }
+      },
+      {
+        "name": "startAt",
+        "label": {
+          "isTranslatable": "singular",
+          "value": "isite.cms.form.startDate"
+        },
+        "field": "startAt",
+        "align": "left",
+        "sortable": false,
+        "format": {
+          "type": "date",
+          "includes": {
+            "type":"long"
+          }
+        }
+      },
+      {
+        "name": "endAt",
+        "label": {
+          "isTranslatable": "singular",
+          "value": "isite.cms.form.endDate"
+        },
+        "field": "endAt",
+        "align": "left",
+        "sortable": false,
+        "format": {
+          "type": "date",
+          "includes": {
+            "type":"long"
+          }
+        }
+      },
+      {
+        "name": "typeName",
+        "label": {
+          "isTranslatable": "singular",
+          "value": "isite.cms.form.type"
+        },
+        "field": "typeName",
+        "align": "left",
+        "sortable": false
+      },
+      {
+        "name": "category",
+        "label": {
+          "isTranslatable": "singular",
+          "value": "isite.cms.form.category"
+        },
+        "field": "category",
+        "align": "left",
+        "format":{
+          "type":"str",
+          "child":["title"]
+        },
+        "sortable": false
+      },
+      {
+        "name": "department",
+        "label": {
+          "isTranslatable": "singular",
+          "value": "iprofile.cms.label.userGroup"
+        },
+        "field": "department",
+        "align": "left",
+        "format":{
+          "type":"str",
+          "child":["title"]
+        },
+        "sortable": false
+      },
+      {
+        "name": "winner",
+        "label": {
+          "isTranslatable": "singular",
+          "value": "isite.cms.label.winner"
+        },
+        "field": "winner",
+        "align": "left",
+        "format":{
+          "type":"concat",
+          "child":["firstName", "lastName"]
+        },
+        "sortable": false
+      },
+      {
+        "name": "create_at",
+        "label": {
+          "isTranslatable": "singular",
+          "value": "isite.cms.form.createdAt"
+        },
+        "field": "createdAt",
+        "align": "left",
+        "sortable": false,
+        "format": {
+          "type": "date"
+        }
+      },
+      {
+        "name": "updated_at",
+        "label": {
+          "isTranslatable": "singular",
+          "value": "isite.cms.form.updatedAt"
+        },
+        "field": "updatedAt",
+        "align": "right",
+        "sortable": false,
+        "format": {
+          "type": "date"
+        }
+      },
+      {
+        "name": "actions",
+        "label": {
+          "isTranslatable": "singular",
+          "value": "isite.cms.form.actions"
+        },
+        "align": "left"
+      }
+    ],
+    "requestParams": {
+      "include": "category,department,winner,creator,fields"
+    },
+    "filters": [
+      {
+        "filterName": "status",
+        "value": null,
+        "type": "select",
+        "props": {
+          "label": {
+            "isTranslatable": {
+              "type": "singular",
+              "value": "isite.cms.form.status"
+            },
+            "clearable": true,
+            "options": [
+              {
+                "label": "isite.cms.label.disabled", 
+                "value": "0"
+              },
+              {
+                "label": "isite.cms.label.enabled", 
+                "value": "1"
+              },
+              {
+                "label": "isite.cms.label.finished", 
+                "value": "2"
+              }
+            ]
+          }
+        }
+      },
+      {
+        "filterName": "type",
+        "value": null,
+        "type": "select",
+        "clearable": true,
+        "props": {
+          "label": {
+            "isTranslatable": {
+              "type": "singular",
+              "value": "isite.cms.form.type"
+            }
+          },
+          "clearable": true,
+          "options": [
+            {
+              "label": "isite.cms.label.inverse", 
+              "value": "0"
+            },
+            {
+              "label": "isite.cms.label.open", 
+              "value": "1"
+            }
+          ]
+        }
+      },
+      {
+        "filterName": "categoryId",
+        "value": null,
+        "type": "treeSelect",
+        "props": {
+          "label": {
+            "isTranslatable": {
+              "type": "singular",
+              "value": "isite.cms.form.parent"
+            }
+          },
+          "clearable": true
+        },
+        "loadOptions": {
+          "apiRoute": "/iblog/v1/categories",
+          "requestParams": {
+            "filter": {
+              "status": 1
+            }
+          }
+        }
+      }
+    ],
+    "actions": [
+      {
+        "name":"show",
+        "icon":"fas fa-eye",
+        "label": {
+          "isTranslatable": "singular",
+          "value": "isite.cms.label.show"
+        },
+        "action": {
+          "type":"ref",
+          "value":"showAuction", 
+          "method": "showAuctionData"
+        }
+      },
+      {
+        "name":"bid",
+        "icon": "far fa-hand-point-up",
+        "label": {
+          "isTranslatable": "singular",
+          "value": "iauctions.cms.bidUp"
+        },
+        "action": {
+          "type":"ref",
+          "value":"formBid", 
+          "method": "loadform",
+          "params":{
+            "auctionId":"id",
+            "extraFormId":"category.bidFormId",
+            "modalProps":{
+              "title": "iauctions.cms.newBid",
+              "key":"title"
+            }
+          }
+        },
+        "format": {
+          "type":"conditional",
+          "validationAppMode": {
+            "mode":"iadmin"
+          },
+          "value":1,
+          "child":"status",
+          "yes":{
+            "vIf": false
+          }
+           ,
+          "no": {
+            "vIf": false
+          }
+        }
+      },
+      {
+        "name":"cancel",
+        "icon":"fas fa-times",
+        "label": {
+          "isTranslatable": "singular",
+          "value": "isite.cms.label.cancel"
+        },
+        "format": {
+          "type":"conditional",
+          "method":"includes",
+          "validationAppMode": {
+            "mode":"ipanel"
+          },
+          "yes":{
+            "vIf": false
+          } ,
+          "child":"status",
+          "value":[2,3],
+          "no": {
+            "vIf": false
+          }
+        },
+        "action": {
+          "type":"customAuctions"
+        }
+      }
+    ]
+  },
+  "update": false,
+  "delete": false
+}

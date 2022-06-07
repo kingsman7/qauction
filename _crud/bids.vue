@@ -1,12 +1,16 @@
 <template>
-  <show-bid-data ref="showBidData"/>
+  <div>
+    <show-bid-data ref="showBidData"/>
+    <config-crud ref="configCrud" />
+  </div>
 </template>
 <script>
 //Components
 import showBidData from '@imagina/qauction/_components/showBid'
-
+import configCrud from "@imagina/qcrud/_config/CrudConfig"
+import auctionJson from "@imagina/qauction/_crud/bids.json"
 export default {
-  components: {showBidData},
+  components: {showBidData, configCrud},
   data() {
     return {
       crudId: this.$uid(),
@@ -19,7 +23,8 @@ export default {
     },
     crudData() {
       return {
-        crudId: this.crudId,
+        ...this.$refs.configCrud.getData(auctionJson, this.$refs, null, this.statusColor),
+        /*crudId: this.crudId,
         entityName: config("main.qauction.entityNames.auction"),
         apiRoute: 'apiRoutes.qauction.bids',
         permission: 'iauctions.bids',
@@ -27,25 +32,37 @@ export default {
         create: false,
         read: {
           columns: [
-            {name: 'id', label: this.$tr('isite.cms.form.id'), field: 'id', style: 'width: 50px'},
+            {name: 'id', 
+            label: this.$tr('isite.cms.form.id'), 
+            field: 'id', style: 'width: 50px'},
             {
-              name: 'auction', label: this.$tr('iauctions.cms.auction'), field: 'auction', align: 'left',
+              name: 'auction', 
+              label: this.$tr('iauctions.cms.auction'), 
+              field: 'auction', align: 'left',
               format: val => val ? val.title : '-',
             },
             {
-              name: 'provider', label: this.$tr('isite.cms.label.provider'), field: 'provider', align: 'left',
+              name: 'provider', 
+              label: this.$tr('isite.cms.label.provider'), 
+              field: 'provider', align: 'left',
               format: val => val ? `${val.firstName} ${val.lastName}` : '-',
             },
             {
-              name: 'statusName', label: this.$tr('isite.cms.form.status'), field: 'statusName', align: 'left',
+              name: 'statusName', 
+              label: this.$tr('isite.cms.form.status'), 
+              field: 'statusName', align: 'left',
               classes: row => `text-weight-bold ${this.statusColor[row.status]}`
             },
             {
-              name: 'amount', label: this.$tr('isite.cms.label.amount'), field: 'amount', align: 'left',
+              name: 'amount', 
+              label: this.$tr('isite.cms.label.amount'), 
+              field: 'amount', align: 'left',
               format: val => val ? this.$trn(val) : '-',
             },
             {
-              name: 'winner', label: this.$tr('isite.cms.label.winner'), field: 'winner', align: 'left',
+              name: 'winner', 
+              label: this.$tr('isite.cms.label.winner'), 
+              field: 'winner', align: 'left',
               format: val => parseInt(val) ? this.$tr('isite.cms.label.yes') : this.$tr('isite.cms.label.no'),
             },
             {
@@ -94,7 +111,7 @@ export default {
           ]
         },
         update: false,
-        delete: false
+        delete: false*/
       }
     },
     //Crud info
